@@ -3,7 +3,7 @@ Tunes is a open source music bot for Discord servers. The bot is developed activ
 supported widely.
 
 # How to use this?
-No worrie's! Just click this link and you'll get to invite the Tunes bot to your server/servers.
+No worries! Just click this link and you'll get to invite the Tunes bot to your server/servers.
 Link: 
 
 # Is this safe to use?
