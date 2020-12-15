@@ -18,16 +18,15 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
-
     client.commands.set(command.name, command);
 }
 
 
-client.on('nessage', message => {
+client.on('message', message => {
 
     if(!message.content.startsWith(PREFIX) || message.author.client) return;
 
-    const args = message.content.slice(PREFIX.length).split(/ +/);
+    var args = message.content.split(' ')
     const command = args.shift();
 
 
@@ -54,6 +53,8 @@ client.on('nessage', message => {
         case 'pause':
             client.commands.get('pause').execute(message, Discord, args)
             break;
+        case 'help':
+            client.commands.get('help').execute(Discord, message)
         default:
             const errorEmbed = new Discord.MessageEmbed()
             .setColor('')
