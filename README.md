@@ -9,3 +9,7 @@
 <a href="https://github.com/elangosundar/awesome-README-templates/blob/master/LICENSE"><img src="https://img.shields.io/github/license/elangosundar/awesome-README-templates?color=2b9348" alt="License Badge"/></a>
 </div>
 <br>
+
+# Description
+Tunes is a open source music bot for Discord. Its developed by team on 2 finnish boys.
+It will play music for you whenever you want whereever you want! We aim to make the best music bot in Discord so YOU can enjoy!
