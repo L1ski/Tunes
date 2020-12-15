@@ -1,5 +1,5 @@
 <h1 align="center">Tunes</h1>
-<p align="center"><i>The open source music bot for Discord servers.</i></p>
+<p align="center"><i>Awesome music bot for Discord servers!</i></p>
 <div align="center">
   <a href="https://github.com/elangosundar/awesome-README-templates/stargazers"><img src="https://img.shields.io/github/stars/elangosundar/awesome-README-templates" alt="Stars Badge"/></a>
 <a href="https://github.com/elangosundar/awesome-README-templates/network/members"><img src="https://img.shields.io/github/forks/elangosundar/awesome-README-templates" alt="Forks Badge"/></a>
