@@ -1,11 +1,10 @@
 <h1 align="center">Tunes</h1>
 <p align="center"><i>Awesome music bot for Discord servers!</i></p>
+
 <div align="center">
-  
 <a href="https://github.com/L1ski/Tunes/pulls"><img src="https://img.shields.io/github/issues-pr/L1ski/Tunes" alt="Pull Requests Badge"/></a>
 <a href="https://github.com/L1ski/Tunes/issues"><img src="https://img.shields.io/github/issues/L1ski/Tunes" alt="Issues Badge"/></a>
 <a href="https://github.com/L1ski/Tunes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/L1ski/Tunes?color=2b9348" alt="License Badge"/></a>
-
 </div>
 <br>
 
