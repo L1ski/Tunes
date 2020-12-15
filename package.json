@@ -23,8 +23,10 @@
   "homepage": "https://github.com/L1ski/Tunes#readme",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
     "fs": "0.0.1-security",
+    "mysql": "^2.18.1",
     "opts": "^2.0.2",
     "opusscript": "0.0.7",
     "ytdl-core": "^4.1.5"

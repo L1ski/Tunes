@@ -1,5 +1,6 @@
 // This is the main file for the bot. This must run when you want to run the bot.
 const Discord = require('discord.js');
+const mysql = require('./bot/mysql/mysql.js')
 const config = require('./config.json');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
@@ -10,6 +11,7 @@ var queue = [];
 
 const client = new Discord.Client();
 client.login(config.TOKEN)
+console.log('Tunes is online!')
 
 
 //Command Handler
