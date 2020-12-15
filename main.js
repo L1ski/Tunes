@@ -2,12 +2,18 @@
 const Discord = require('discord.js');
 const mysql = require('./bot/mysql/mysql.js')
 const config = require('./config.json');
+const search = require('youtube-search');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
-
-PREFIX = '!';
+const opts = {
+    maxResults: 3,
+    key: 'AIzaSyDo7-NnYlho_6KB_qAUXHJX5kmvSFCnWbk',
+    type: 'video'
+};
 
 var queue = [];
+
+PREFIX = '!';
 
 const client = new Discord.Client();
 client.login(config.TOKEN)
@@ -26,7 +32,6 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
-
 client.on('message', message => {
 
     if(!message.content.startsWith(PREFIX) || message.author.bot) return;
@@ -36,6 +41,9 @@ client.on('message', message => {
 
     //Command Handling
     switch(command.toLowerCase()) {
+        case 'play':
+            client.commands.get('play').execute(message, Discord, args, ytdl, opts, search, queue);
+            break;
         case 'help':
             client.commands.get('help').execute(message, Discord, args);
             break;
@@ -43,7 +51,7 @@ client.on('message', message => {
             client.commands.get('stop').execute(message, Discord, args);
             break;
         case 'skip':
-            client.commands.get('skip').execute(message, Discord, args);
+            client.commands.get('skip').execute(message, Discord, ytdl, queue);
             break;
         case 'fs':
             client.commands.get('fs').execute(message, Discord);
@@ -60,10 +68,13 @@ client.on('message', message => {
         case 'pause':
             client.commands.get('pause').execute(message, Discord, args);
             break;
+        case 'queue':
+            client.commands.get('queue').execute(message, Discord, args, ytdl, queue);
+            break;
         default:
             const ErrorEmbed = new Discord.MessageEmbed()
             .setColor('7A54C5')
-            .setDescription('I did not recognize that command. Type **!help** to see all my commands.')
+            .setDescription('I did not recognize that command. Visit our [website](https://youtube.com) to see all the commands.')
             message.channel.send(ErrorEmbed)
     }
 })
