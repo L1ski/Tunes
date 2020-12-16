@@ -3,7 +3,7 @@ module.exports = {
     description: 'Plays some music',
     execute(message, Discord, args, ytdl, opts, search, queue) {
 
-        if(!message.member.voice.channel) {
+        if (!message.member.voice.channel) {
             const ErrorEmbed = new Discord.MessageEmbed()
             .setColor('7A54C5')
             .setDescription('You need to be in a voice channel.')
@@ -21,7 +21,6 @@ module.exports = {
             .setTimestamp()
             .setFooter('Requested by ' + message.author.username, message.author.avatarURL())
             .addFields(
-                //{ name: '\u200B', value: '\u200B', inline: true },
                 { name: 'Views', value: song.videoDetails.viewCount.toLocaleString(), inline: true },
                 { name: 'Likes', value: song.videoDetails.likes.toLocaleString(), inline: true },
                 { name: 'Dislikes', value: song.videoDetails.dislikes.toLocaleString(), inline: true },
@@ -29,24 +28,24 @@ module.exports = {
             message.channel.send(MusicEmbed)
         }
         
-        play(args.slice(0).join(" "));
+        play(args.slice(0).join(" "))
 
         async function play(song) {
             const voiceChannel = message.member.voice.channel
             const connection = await voiceChannel.join();
-            if(ytdl.validateURL(song)) {
+            if (ytdl.validateURL(song)) {
                 console.log(song);
                 const songInfo = await (await ytdl.getInfo(song))
                 sendMusicEmbed(songInfo)
-                if(queue.length == 0) {
+                if (queue.length == 0) {
                     queue.push(song)
                     const dispatcher = connection.play(ytdl(song))
                     dispatcher.on('finish', () => {
                         queue.shift(song)
-                        if(queue.length == 0) {
+                        if (queue.length == 0) {
                             voiceChannel.leave()
                         } else {
-                            const dispatcher = connection.play(ytdl(queue[0]))
+                            connection.play(ytdl(queue[0]))
                         }
                     })
                 } else {
@@ -54,6 +53,7 @@ module.exports = {
                     .setColor('7A54C5')
                     .setDescription('Song Queued.')
                     message.channel.send(QueueEmbed)
+                    queue.push(song)
                 }
             } else {
                 try {
@@ -71,11 +71,9 @@ module.exports = {
                     return
                 } catch (err) {
                     const error2Embed = new Discord.MessageEmbed()
-                    .setColor('00E8FF')
-                    .setDescription(':warning: Video not found...')
-                    message.channel.send(error2Embed => {
-                        error2Embed.delete({timeout: 8000})
-                    })
+                    .setColor('7A54C5')
+                    .setDescription('Video not found.')
+                    message.channel.send(error2Embed)
                 }
             }
         } 

@@ -1,6 +1,6 @@
 // This is the main file for the bot. This must run when you want to run the bot.
 const Discord = require('discord.js');
-const mysql = require('./bot/mysql/mysql.js')
+const mysql = require('./bot/mysql/mysql.js');
 const config = require('./config.json');
 const search = require('youtube-search');
 const ytdl = require('ytdl-core');
@@ -17,7 +17,11 @@ PREFIX = '!';
 
 const client = new Discord.Client();
 client.login(config.TOKEN)
-console.log('Tunes is online!')
+
+client.on('ready', () => {
+    console.log('Tunes is online!')
+    client.user.setActivity('!help 🎵', ({ type: 'LISTENING' }))
+})
 
 
 //Embed Color Code >> 7A54C5
@@ -35,7 +39,7 @@ for(const file of commandFiles){
 client.on('message', message => {
 
     if(!message.content.startsWith(PREFIX) || message.author.bot) return;
-    var args = message.content.slice(PREFIX.length).split(/ +/)
+    const args = message.content.slice(PREFIX.length).split(/ +/)
     const command = args.shift();
 
 
@@ -60,7 +64,7 @@ client.on('message', message => {
             client.commands.get('seek').execute(message, Discord, args);
             break;
         case 'search':
-            client.commands.get('search').execute(message, Discord, args);
+            client.commands.get('search').execute(message, Discord, args, search, opts, ytdl, queue);
             break;
         case 'resume':
             client.commands.get('resume').execute(message, Discord, args);
