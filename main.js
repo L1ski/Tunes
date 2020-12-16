@@ -7,7 +7,7 @@ const ytdl = require('ytdl-core');
 const fs = require('fs');
 const opts = {
     maxResults: 3,
-    key: 'AIzaSyDo7-NnYlho_6KB_qAUXHJX5kmvSFCnWbk',
+    key: config.YOUTUBE_API_KEY,
     type: 'video'
 };
 
