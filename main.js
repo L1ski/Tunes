@@ -1,17 +1,39 @@
 // This is the main file for the bot. This must run when you want to run the bot.
-const Discord = require('discord.js');
+
+// Dependencies
+const { Discord, Structures } = require('discord.js');
+const { CommandoClient } = require('discord.js-commando');
+
+// Files
 const mysql = require('./bot/mysql/mysql.js');
 const config = require('./config.json');
-const search = require('youtube-search');
-const ytdl = require('ytdl-core');
-const fs = require('fs');
-const opts = {
-    maxResults: 3,
-    key: config.YOUTUBE_API_KEY,
-    type: 'video'
-};
 
-var queue = [];
+Structures.extend('Guild', Guild => {
+    class MusicGuild extends Guild {
+      constructor(client, data) {
+        super(client, data);
+        this.musicData = {
+            queue: [],
+            isPlaying: false,
+            volume: 1,
+            songDispatcher: null
+        };
+      }
+    }
+    return MusicGuild;
+});
+
+const client = new CommandoClient({
+    commandPrefix: prefix,
+    owner: '368387873449181186',
+    unknownCommandResponse: true
+});
+
+client.registry
+  .registerDefaultTypes()
+  .registerDefaultGroups()
+  .registerDefaultCommands()
+  .registerCommandsIn(path.join(__dirname, 'commands'));
 
 PREFIX = '!';
 
@@ -30,14 +52,7 @@ client.on('ready', () => {
 //Command Handler
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
-for(const file of commandFiles){
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
-}
-
 client.on('message', message => {
-
     if(!message.content.startsWith(PREFIX) || message.author.bot) return;
     const args = message.content.slice(PREFIX.length).split(/ +/)
     const command = args.shift();
@@ -46,7 +61,7 @@ client.on('message', message => {
     //Command Handling
     switch(command.toLowerCase()) {
         case 'play':
-            client.commands.get('play').execute(message, Discord, args, ytdl, opts, search, queue);
+            client.commands.get('play').execute(message);
             break;
         case 'help':
             client.commands.get('help').execute(message, Discord, args);
@@ -55,7 +70,7 @@ client.on('message', message => {
             client.commands.get('stop').execute(message, Discord, args);
             break;
         case 'skip':
-            client.commands.get('skip').execute(message, Discord, ytdl, queue);
+            client.commands.get('skip').execute(message, Discord, queue);
             break;
         case 'fs':
             client.commands.get('fs').execute(message, Discord);
@@ -64,7 +79,7 @@ client.on('message', message => {
             client.commands.get('seek').execute(message, Discord, args);
             break;
         case 'search':
-            client.commands.get('search').execute(message, Discord, args, search, opts, ytdl, queue);
+            client.commands.get('search').execute(message, Discord, args, search, opts, queue);
             break;
         case 'resume':
             client.commands.get('resume').execute(message, Discord, args);
