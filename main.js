@@ -40,9 +40,16 @@ client.on('message', message => {
     var args = message.content.split(' ')
     if (!args[0].startsWith('!')) return;
     const command = args[0].toString().replace('!', '')
-    if (client.commands.has(command) || client.aliases.has(command)) {
+    if (client.commands.get(command)) {
         try {
             client.commands.get(command).execute(message, args)
+        } catch (error) {
+            console.log(error)
+            message.reply('Error executing the command.')
+        }
+    } else if (client.aliases.has(command)) {
+        try {
+            client.aliases.get(command).execute(message, args)
         } catch (error) {
             console.log(error)
             message.reply('Error executing the command.')
