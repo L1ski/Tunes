@@ -1,56 +1,32 @@
 // This is the main file for the bot. This must run when you want to run the bot.
 
 // Dependencies
-const { Discord, Structures } = require('discord.js');
-const { CommandoClient } = require('discord.js-commando');
-const path = require('path');
+const fs = require('fs');
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
 // Files
 const config = require('./config.json');
 
-Structures.extend('Guild', Guild => {
-    class MusicGuild extends Guild {
-      constructor(client, data) {
-        super(client, data);
-        this.musicData = {
-            queue: [],
-            isPlaying: false,
-            volume: 1,
-            songDispatcher: null
-        };
-      }
-    }
-    return MusicGuild;
-});
 
-PREFIX = '!'
-
-const client = new CommandoClient({
-    commandPrefix: PREFIX,
-    unknownCommandResponse: true
-});
-
-client.registry
-  .registerDefaultTypes()
-  .registerGroups([
-    ['music', 'Music Command Group']
-  ])
-  .registerDefaultGroups()
-  .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.on('ready', () => {
     console.log('Tunes is online!')
-    //client.user.setActivity('!help 🎵', ({ type: 'LISTENING' }))
-    client.user.setActivity(PREFIX+'help', {
-        type: 'STREAMING',
-        url: 'https://github.com/L1ski/Tunes'
-    });
+    client.user.setActivity('!help 🎵', ({ type: 'LISTENING' }))
 })
 
 client.login(config.TOKEN)
 
 //Embed Color Code >> 7A54C5
 
+
+//Command Registering
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
+for(const file of commandFiles){
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
 
 client.on('message', message => {
     
