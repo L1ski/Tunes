@@ -22,10 +22,16 @@ client.login(config.TOKEN)
 
 //Command Registering
 client.commands = new Discord.Collection();
+client.aliases = new Discord.Collection()
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
+    if (command.aliases) {
+        command.aliases.forEach(alias => {
+            client.aliases.set(alias, command)
+        })
+    }
 }
 
 //Command Handler
@@ -34,7 +40,7 @@ client.on('message', message => {
     var args = message.content.split(' ')
     if (!args[0].startsWith('!')) return;
     const command = args[0].toString().replace('!', '')
-    if (client.commands.has(command)) {
+    if (client.commands.has(command) || client.aliases.has(command)) {
         try {
             client.commands.get(command).execute(message, args)
         } catch (error) {
@@ -44,7 +50,7 @@ client.on('message', message => {
     } else {
         const cmdnotfound = new Discord.MessageEmbed()
         .setColor('#7A54C5')
-        .addField('Command not found!', ' \nCheck out my commands [HERE](https://tunesbot.net/commands)')
+        .addField('Command not found', ' \nCheck out my commands [here](https://tunesbot.net/commands)')
         message.channel.send(cmdnotfound);
     }
     
