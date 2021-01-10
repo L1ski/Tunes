@@ -8,7 +8,9 @@ const client = new Discord.Client();
 // Files
 const config = require('./config.json');
 
-
+//Settings
+//Embed Color Code >> 7A54C5
+prefix = '!'
 
 client.on('ready', () => {
     console.log('Tunes is online!')
@@ -16,8 +18,6 @@ client.on('ready', () => {
 })
 
 client.login(config.TOKEN)
-
-//Embed Color Code >> 7A54C5
 
 
 //Command Registering
@@ -28,14 +28,25 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
+//Command Handler
 client.on('message', message => {
-    
+    if (message.author.bot) return;
     var args = message.content.split(' ')
-
-    //Command Handling
-    switch(args[0].toLowerCase()) {
-
+    if (!args[0].startsWith('!')) return;
+    const command = args[0].toString().replace('!', '')
+    if (client.commands.has(command)) {
+        try {
+            client.commands.get(command).execute(message, args)
+        } catch (error) {
+            console.log(error)
+            message.reply('Error executing the command.')
+        }
+    } else {
+        const cmdnotfound = new Discord.MessageEmbed()
+        .setColor('#7A54C5')
+        .addField('Command not found!', ' \nCheck out my commands [HERE](https://tunesbot.net/commands)')
+        message.channel.send(cmdnotfound);
     }
-
+    
 })
 
